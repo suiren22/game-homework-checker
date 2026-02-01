@@ -2,11 +2,12 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#00a1ff">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="게임숙제">
+    <meta name="mobile-web-app-capable" content="yes">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
     <title>모바일 게임 숙제 체크</title>
@@ -14,61 +15,56 @@
         :root {
             --primary: #00a1ff;
             --bg: #eef7ff;
-            --text-color: #4c5b70;
             --card-bg: #ffffff;
             --done-bg: #d1d1d1;
-            --shadow: rgba(0,0,0,0.08);
             --danger: #ff5c5c;
         }
         
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
         }
         
         body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-            background-color: var(--bg);
-            background-image: 
-                linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%, #ffffff), 
-                linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%, #ffffff);
-            background-size: 40px 40px;
-            background-position: 0 0, 20px 20px;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            padding-bottom: env(safe-area-inset-bottom);
+            background: linear-gradient(135deg, var(--bg) 0%, #d4e8ff 100%);
+            display: flex;
+            flex-direction: column;
         }
         
         .header {
             background: linear-gradient(135deg, var(--primary) 0%, #0077cc 100%);
             color: white;
-            padding: 20px;
-            padding-top: calc(20px + env(safe-area-inset-top));
+            padding: 12px 15px;
+            padding-top: calc(12px + env(safe-area-inset-top));
             text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            flex-shrink: 0;
         }
         
         .header h1 {
-            margin: 0;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 800;
-        }
-        
-        .header .subtitle {
-            font-size: 0.75rem;
-            opacity: 0.9;
-            margin-top: 5px;
+            margin-bottom: 6px;
         }
         
         .progress-bar {
             background: rgba(255,255,255,0.3);
             border-radius: 10px;
-            height: 8px;
-            margin-top: 12px;
+            height: 6px;
             overflow: hidden;
         }
         
@@ -79,35 +75,49 @@
             transition: width 0.3s ease;
         }
         
+        .stats {
+            font-size: 0.7rem;
+            margin-top: 4px;
+            opacity: 0.9;
+        }
+        
         .container {
-            padding: 15px;
-            max-width: 500px;
-            margin: 0 auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 8px;
+            padding-bottom: calc(8px + env(safe-area-inset-bottom));
+            overflow: hidden;
+            min-height: 0;
         }
         
         .grid-container {
+            flex: 1;
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            grid-template-rows: repeat(4, 1fr);
+            gap: 6px;
+            min-height: 0;
         }
         
         .game-card {
             background: var(--card-bg);
-            border-radius: 20px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 6px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            box-shadow: 0 5px 15px var(--shadow);
-            border: 2px solid white;
-            transition: all 0.2s ease;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            transition: transform 0.15s;
+            min-height: 0;
         }
         
         .game-card:active {
-            transform: scale(0.96);
+            transform: scale(0.95);
         }
         
         .game-card.done {
@@ -122,39 +132,40 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) rotate(-15deg);
-            font-size: 1.6rem;
+            font-size: 1rem;
             font-weight: 900;
             color: rgba(255, 0, 0, 0.6);
-            border: 4px solid rgba(255, 0, 0, 0.6);
-            padding: 2px 8px;
-            border-radius: 10px;
+            border: 3px solid rgba(255, 0, 0, 0.6);
+            padding: 2px 6px;
+            border-radius: 6px;
             pointer-events: none;
         }
         
         .icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 18px;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
             object-fit: cover;
-            margin-bottom: 8px;
-            border: 2px solid #f0f0f0;
+            border: 1px solid #eee;
+            flex-shrink: 0;
         }
         
         .game-title {
-            font-weight: 800;
-            font-size: 0.85rem;
-            margin-bottom: 5px;
+            font-weight: 700;
+            font-size: 0.65rem;
+            margin: 3px 0 2px;
             color: #333;
             text-align: center;
+            line-height: 1.2;
         }
         
         .timer {
-            font-size: 0.7rem;
+            font-size: 0.55rem;
             font-weight: bold;
             color: var(--danger);
             background: #fff0f0;
-            padding: 3px 10px;
-            border-radius: 10px;
+            padding: 2px 6px;
+            border-radius: 8px;
         }
         
         .timer.urgent {
@@ -163,7 +174,20 @@
         
         @keyframes pulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
+            50% { opacity: 0.5; }
+        }
+        
+        .reset-btn {
+            flex-shrink: 0;
+            margin-top: 6px;
+            padding: 10px;
+            background: rgba(255,255,255,0.7);
+            border: none;
+            border-radius: 10px;
+            color: #666;
+            font-weight: bold;
+            font-size: 0.75rem;
+            cursor: pointer;
         }
         
         /* Modal */
@@ -178,28 +202,20 @@
             justify-content: center;
             align-items: center;
             z-index: 100;
-            backdrop-filter: blur(3px);
         }
         
         .modal-content {
             background: white;
-            padding: 25px;
-            border-radius: 20px;
+            padding: 20px;
+            border-radius: 16px;
             text-align: center;
-            width: 280px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            animation: modalIn 0.2s ease;
-        }
-        
-        @keyframes modalIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            width: 250px;
         }
         
         .modal-content p {
             font-weight: bold;
-            margin: 0 0 20px 0;
-            color: #333;
+            margin: 0 0 15px 0;
+            font-size: 0.9rem;
         }
         
         .btn-group {
@@ -207,19 +223,14 @@
             gap: 10px;
         }
         
-        button {
+        .btn-group button {
             flex: 1;
-            padding: 14px;
+            padding: 12px;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             font-weight: bold;
             cursor: pointer;
-            font-size: 0.9rem;
-            transition: transform 0.1s;
-        }
-        
-        button:active {
-            transform: scale(0.95);
+            font-size: 0.85rem;
         }
         
         .btn-yes {
@@ -232,180 +243,106 @@
             color: white;
         }
         
-        /* Install Banner */
-        .install-banner {
-            display: none;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 12px 15px;
-            margin: 0 15px 15px 15px;
-            border-radius: 15px;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        /* 큰 화면용 (태블릿/데스크탑) */
+        @media (min-height: 700px) {
+            .icon {
+                width: 55px;
+                height: 55px;
+            }
+            .game-title {
+                font-size: 0.75rem;
+            }
+            .timer {
+                font-size: 0.65rem;
+            }
+            .game-card.done::after {
+                font-size: 1.3rem;
+            }
         }
         
-        .install-banner.show {
-            display: flex;
+        @media (min-height: 800px) {
+            .icon {
+                width: 65px;
+                height: 65px;
+            }
+            .game-title {
+                font-size: 0.85rem;
+            }
+            .timer {
+                font-size: 0.7rem;
+            }
         }
         
-        .install-banner-text {
-            flex: 1;
-            font-size: 0.8rem;
-        }
-        
-        .install-banner-text strong {
-            display: block;
-            font-size: 0.9rem;
-            margin-bottom: 2px;
-        }
-        
-        .install-btn {
-            background: white;
-            color: #667eea;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.8rem;
-            border: none;
-            flex: none;
-        }
-        
-        .close-banner {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            padding: 0;
-            width: 24px;
-            height: 24px;
-            flex: none;
-            opacity: 0.8;
-        }
-        
-        /* Reset All Button */
-        .reset-all-btn {
-            display: block;
-            width: 100%;
-            margin-top: 15px;
-            padding: 14px;
-            background: #f5f5f5;
-            border: 2px dashed #ddd;
-            border-radius: 15px;
-            color: #888;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .reset-all-btn:active {
-            background: #eee;
-        }
-        
-        /* Stats */
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 8px;
-        }
-        
-        .stat-item {
-            font-size: 0.75rem;
-            opacity: 0.9;
-        }
-        
-        .stat-item span {
-            font-weight: bold;
+        @media (min-height: 900px) {
+            .header {
+                padding: 16px 20px;
+            }
+            .header h1 {
+                font-size: 1.3rem;
+            }
+            .container {
+                padding: 12px;
+            }
+            .grid-container {
+                gap: 10px;
+            }
+            .icon {
+                width: 75px;
+                height: 75px;
+            }
+            .game-title {
+                font-size: 0.9rem;
+            }
+            .timer {
+                font-size: 0.75rem;
+                padding: 4px 10px;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h1>🎮 모바일 게임 숙제 체크</h1>
-    <div class="subtitle">오늘도 숙제 완료!</div>
+    <h1>🎮 모바일 게임 숙제</h1>
     <div class="progress-bar">
         <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
     </div>
-    <div class="stats">
-        <div class="stat-item">완료: <span id="done-count">0</span>/<span id="total-count">0</span></div>
-    </div>
+    <div class="stats">완료: <span id="done-count">0</span>/<span id="total-count">8</span></div>
 </div>
 
 <div class="container">
-    <div class="install-banner" id="install-banner">
-        <div class="install-banner-text">
-            <strong>앱으로 설치하기</strong>
-            홈 화면에 추가하여 더 편리하게!
-        </div>
-        <button class="install-btn" id="install-btn">설치</button>
-        <button class="close-banner" id="close-banner">×</button>
-    </div>
-    
     <div class="grid-container" id="grid"></div>
-    
-    <button class="reset-all-btn" onclick="resetAll()">🔄 전체 초기화</button>
+    <button class="reset-btn" onclick="resetAll()">🔄 전체 초기화</button>
 </div>
 
 <div id="modal">
     <div class="modal-content">
-        <p>아직 숙제를 안하셨나요?</p>
+        <p>숙제를 취소할까요?</p>
         <div class="btn-group">
-            <button class="btn-yes" onclick="closeModal(true)">했어요</button>
-            <button class="btn-no" onclick="closeModal(false)">안했어요</button>
+            <button class="btn-yes" onclick="closeModal(true)">유지</button>
+            <button class="btn-no" onclick="closeModal(false)">취소</button>
         </div>
     </div>
 </div>
 
 <script>
-    // 게임 데이터 - 이미지 파일 사용
     const games = [
         { name: "니케", reset: 5, img: "images/니케.jpg" },
         { name: "원신", reset: 5, img: "images/원신.jpg" },
-        { name: "젠레스 존 제로", reset: 5, img: "images/젠레스.jpg" },
+        { name: "젠레스", reset: 5, img: "images/젠레스.jpg" },
         { name: "엔드필드", reset: 5, img: "images/엔드필드.jpg" },
         { name: "명조", reset: 5, img: "images/명조.png" },
         { name: "세븐나이츠R", reset: 9, img: "images/세븐나이츠.png" },
-        { name: "블루아카이브", reset: 4, img: "images/블루아카.png" },
+        { name: "블루아카", reset: 4, img: "images/블루아카.png" },
         { name: "소녀전선2", reset: 5, img: "images/소녀전선2.jpg" }
     ];
 
     let gameState = JSON.parse(localStorage.getItem('hw_tracker_final')) || {};
     let selectedGame = null;
 
-    // PWA Install
-    let deferredPrompt;
-    const installBanner = document.getElementById('install-banner');
-    const installBtn = document.getElementById('install-btn');
-    const closeBanner = document.getElementById('close-banner');
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        installBanner.classList.add('show');
-    });
-
-    installBtn.addEventListener('click', async () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                installBanner.classList.remove('show');
-            }
-            deferredPrompt = null;
-        }
-    });
-
-    closeBanner.addEventListener('click', () => {
-        installBanner.classList.remove('show');
-    });
-
     // Service Worker 등록
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
-            .then(reg => console.log('Service Worker registered'))
-            .catch(err => console.log('Service Worker registration failed:', err));
+        navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
     }
 
     function init() {
@@ -416,7 +353,6 @@
         games.forEach(game => {
             const data = gameState[game.name] || { done: false, lastChecked: 0 };
             
-            // 자동 초기화 체크
             if (shouldReset(game.reset, data.lastChecked)) {
                 data.done = false;
                 gameState[game.name] = data;
@@ -429,9 +365,9 @@
             card.className = `game-card ${data.done ? 'done' : ''}`;
             card.onclick = () => handleCardClick(game.name);
             card.innerHTML = `
-                <img src="${game.img}" class="icon" alt="${game.name}" loading="lazy">
+                <img src="${game.img}" class="icon" alt="${game.name}">
                 <div class="game-title">${game.name}</div>
-                <div class="timer" id="timer-${game.name}">00:00:00</div>
+                <div class="timer" id="timer-${game.name}">--:--:--</div>
             `;
             grid.appendChild(card);
         });
@@ -456,18 +392,13 @@
         } else {
             gameState[name] = { done: true, lastChecked: Date.now() };
             localStorage.setItem('hw_tracker_final', JSON.stringify(gameState));
-            
-            // 진동 피드백 (지원되는 경우)
-            if (navigator.vibrate) {
-                navigator.vibrate(50);
-            }
-            
+            if (navigator.vibrate) navigator.vibrate(50);
             init();
         }
     }
 
-    function closeModal(stillDone) {
-        if (!stillDone) {
+    function closeModal(keepDone) {
+        if (!keepDone) {
             gameState[selectedGame].done = false;
             localStorage.setItem('hw_tracker_final', JSON.stringify(gameState));
             init();
@@ -476,11 +407,9 @@
     }
 
     function updateProgress(doneCount) {
-        const total = games.length;
-        const percentage = (doneCount / total) * 100;
+        const percentage = (doneCount / games.length) * 100;
         document.getElementById('progress-fill').style.width = percentage + '%';
         document.getElementById('done-count').textContent = doneCount;
-        document.getElementById('total-count').textContent = total;
     }
 
     function updateTimers() {
@@ -498,20 +427,14 @@
             const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
             const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
             
-            timerEl.innerText = `${h}:${m}:${s} 남음`;
-            
-            // 1시간 이내면 긴급 표시
-            if (diff < 3600000) {
-                timerEl.classList.add('urgent');
-            } else {
-                timerEl.classList.remove('urgent');
-            }
+            timerEl.innerText = `${h}:${m}:${s}`;
+            timerEl.classList.toggle('urgent', diff < 3600000);
         });
         setTimeout(updateTimers, 1000);
     }
 
     function resetAll() {
-        if (confirm('모든 숙제를 초기화하시겠습니까?')) {
+        if (confirm('모든 숙제를 초기화할까요?')) {
             games.forEach(game => {
                 gameState[game.name] = { done: false, lastChecked: 0 };
             });
@@ -520,7 +443,6 @@
         }
     }
 
-    // 초기화
     init();
 </script>
 </body>
